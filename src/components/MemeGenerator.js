@@ -18,25 +18,26 @@ class MemeGenerator extends React.Component {
         fetch('https://api.imgflip.com/get_memes')
             .then((response) => response.json())
             .then(response => {
-                const {memes} = response.data
+                const { memes } = response.data
                 this.setState({
                     allMemeImgs: memes
                 })
             })
     }
 
-    handleChange(event){
-        const {name, value} = event.target
+    handleChange(event) {
+        const { name, value } = event.target
         this.setState({
             [name]: value
         })
     }
 
-    getRandomNumber(){
+    getRandomNumber() {
         return Math.floor(Math.random() * (this.state.allMemeImgs.length - 0)) + 0;
     }
 
-    genMeme(){
+    genMeme(event) {
+        event.preventDefault();
         const newMeme = this.state.allMemeImgs[this.getRandomNumber()];
         this.setState({
             randomImage: newMeme.url
@@ -46,14 +47,14 @@ class MemeGenerator extends React.Component {
     render() {
         return (
             <div>
-                <form className="meme-form">
-                    <input name="topText" value={this.state.topText} placeholder="Top Text" onChange={this.handleChange}/>
-                    <input name="bottomText" value={this.state.bottomText} placeholder="Bottom Text" onChange={this.handleChange}/>
+                <form className="meme-form" onSubmit={this.genMeme}>
+                    <input name="topText" value={this.state.topText} placeholder="Top Text" onChange={this.handleChange} />
+                    <input name="bottomText" value={this.state.bottomText} placeholder="Bottom Text" onChange={this.handleChange} />
 
-                    <button type="button" onClick={this.genMeme}>Gen</button>
+                    <button>Gen</button>
                 </form>
                 <div className="meme">
-                    <img src={this.state.randomImage} alt=""/>
+                    <img src={this.state.randomImage} alt="" />
                     <h2 className="top">{this.state.topText}</h2>
                     <h2 className="bottom">{this.state.bottomText}</h2>
                 </div>
